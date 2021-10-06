@@ -1,0 +1,6 @@
+---
+- name: Make a configuration change
+  file:
+    path: "{{ playbook_dir }}/checkmode-test"
+    state: directory
+    mode: 0644

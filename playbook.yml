@@ -1,0 +1,11 @@
+---
+- name: whatever
+  hosts: localhost
+  connection: local
+  ignore_unreachable: yes
+  gather_facts: false
+
+  tasks:
+  - name: Perform configuration validation
+    include_role:
+      name: ansible-role-validation

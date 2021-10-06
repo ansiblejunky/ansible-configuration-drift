@@ -1,0 +1,9 @@
+---
+# More info on handlers:
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_handlers.html
+
+- name: Raise error when changes are required in check mode
+  fail:
+    msg: Changes are required - system is noncompliant
+  when: ansible_check_mode | bool
+  listen: Change Required

@@ -1,0 +1,11 @@
+---
+
+- name: Include validation tasks and apply the notify keyword
+  include_tasks: validate.yml
+  args:
+    apply:
+      notify: Change Required
+
+- name: Non config validation task
+  debug:
+    msg: handler called yet?
