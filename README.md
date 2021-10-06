@@ -20,8 +20,9 @@ Demo playbook to produce a failure when check mode shows changes are required
 
 ## Examples
 
+Use check mode to show changes are required and playbook returns with failure message
+
 ```yaml
-# Show changes are required and playbook returns with failure message
 $ ansible-playbook playbook.yml --check
 PLAY [whatever] ***********************************************************************************************************************************************************************
 
@@ -48,14 +49,57 @@ localhost                  : ok=3    changed=1    unreachable=0    failed=1    s
 
 ```
 
-```yaml
-# Make the changes as required
-ansible-playbook playbook.yml
-```
+Apply the changes as reported from above
 
 ```yaml
-# Show server is now compliant and no changes required and playbook returns success
-ansible-playbook playbook.yml --check
+$ ansible-playbook playbook.yml
+
+PLAY [whatever] ***********************************************************************************************************************************************************************
+
+TASK [Perform configuration validation] ***********************************************************************************************************************************************
+
+TASK [ansible-role-validation : Include validation tasks and apply the notify keyword] ************************************************************************************************
+included: /Users/jwadleig/Projects/ansible-config-validation/roles/ansible-role-validation/tasks/validate.yml for localhost
+
+TASK [ansible-role-validation : Make a configuration change] **************************************************************************************************************************
+changed: [localhost]
+
+TASK [ansible-role-validation : Non config validation task] ***************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "handler called yet?"
+}
+
+RUNNING HANDLER [ansible-role-validation : Raise error when changes are required in check mode] ***************************************************************************************
+skipping: [localhost]
+
+PLAY RECAP ****************************************************************************************************************************************************************************
+localhost                  : ok=3    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
+```
+
+Show system is now compliant and no changes required and playbook returns success in both check mode and normal mode.
+
+```yaml
+$ ansible-playbook playbook.yml --check
+
+PLAY [whatever] ***********************************************************************************************************************************************************************
+
+TASK [Perform configuration validation] ***********************************************************************************************************************************************
+
+TASK [ansible-role-validation : Include validation tasks and apply the notify keyword] ************************************************************************************************
+included: /Users/jwadleig/Projects/ansible-config-validation/roles/ansible-role-validation/tasks/validate.yml for localhost
+
+TASK [ansible-role-validation : Make a configuration change] **************************************************************************************************************************
+ok: [localhost]
+
+TASK [ansible-role-validation : Non config validation task] ***************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "handler called yet?"
+}
+
+PLAY RECAP ****************************************************************************************************************************************************************************
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
 ```
 
 ## Tips
