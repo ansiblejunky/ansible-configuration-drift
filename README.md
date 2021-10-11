@@ -16,7 +16,13 @@ However, the problem with using "check mode" is that even when it detects change
 
 ## Solution
 
-Demo playbook to produce a failure when check mode shows changes are required
+Using a trick using a handler event and checking the `check_mode` variable allows us to produce a failure when configuration drift or compliance issue occurs. See details in the code as to how this was implemented.
+
+Below you will find a demo that shows the 3 main benefits: 
+
+(1) Initially, check mode shows configuration drift or non-compliance by failing after checking all configuration items
+(2) Run mode allows remediation on the configuration drift
+(3) Finally, check mode now shows compliance and does not raise an error
 
 ## Examples
 
@@ -29,7 +35,7 @@ PLAY [whatever] ****************************************************************
 TASK [Perform configuration validation] ***********************************************************************************************************************************************
 
 TASK [ansible-role-validation : Include validation tasks and apply the notify keyword] ************************************************************************************************
-included: /Users/jwadleig/Projects/ansible-config-validation/roles/ansible-role-validation/tasks/validate.yml for localhost
+included: roles/ansible-role-validation/tasks/validate.yml for localhost
 
 TASK [ansible-role-validation : Make a configuration change] **************************************************************************************************************************
 changed: [localhost]
@@ -59,7 +65,7 @@ PLAY [whatever] ****************************************************************
 TASK [Perform configuration validation] ***********************************************************************************************************************************************
 
 TASK [ansible-role-validation : Include validation tasks and apply the notify keyword] ************************************************************************************************
-included: /Users/jwadleig/Projects/ansible-config-validation/roles/ansible-role-validation/tasks/validate.yml for localhost
+included: roles/ansible-role-validation/tasks/validate.yml for localhost
 
 TASK [ansible-role-validation : Make a configuration change] **************************************************************************************************************************
 changed: [localhost]
@@ -87,7 +93,7 @@ PLAY [whatever] ****************************************************************
 TASK [Perform configuration validation] ***********************************************************************************************************************************************
 
 TASK [ansible-role-validation : Include validation tasks and apply the notify keyword] ************************************************************************************************
-included: /Users/jwadleig/Projects/ansible-config-validation/roles/ansible-role-validation/tasks/validate.yml for localhost
+included: roles/ansible-role-validation/tasks/validate.yml for localhost
 
 TASK [ansible-role-validation : Make a configuration change] **************************************************************************************************************************
 ok: [localhost]
